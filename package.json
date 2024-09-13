@@ -1,0 +1,32 @@
+{
+  "name": "multi-format-data-transfer",
+  "version": "0.1.0",
+  "description": "Import and export data in various formats",
+  "main": "index.js",
+  "dependencies": {
+    "@saltcorn/markup": "^0.8.0",
+    "@saltcorn/data": "^0.8.0",
+    "moment": "2.29.4",
+    "csv-stringify": "^5.5.0",
+    "json2xml": "0.1.3",
+    "exceljs": "4.4.0"
+  },
+  "author": "Sebastian Beck",
+  "license": "MIT",
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "parserOptions": {
+      "ecmaVersion": 2020
+    },
+    "env": {
+      "node": true,
+      "es6": true
+    },
+    "rules": {
+      "no-unused-vars": "off",
+      "no-case-declarations": "off",
+      "no-empty": "warn",
+      "no-fallthrough": "warn"
+    }
+  }
+}
