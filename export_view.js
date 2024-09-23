@@ -581,8 +581,6 @@ const do_download = async (
 
   switch (export_format) {
     case "xlsx":
-      // Add code to handle xlsx export
-
       if (what === "All columns") {
         const columns = table.fields
           .sort((a, b) => a.id - b.id)
@@ -602,6 +600,7 @@ const do_download = async (
           });
           return rowData;
         });
+
         const jsonData = JSON.stringify(data);
         return json_response(
           table,
@@ -627,7 +626,45 @@ const do_download = async (
         forPublic: !req.user,
         forUser: req.user,
       });
-      const jsonData = JSON.stringify(rowsdata);
+      
+      const tfields = layout?.list_columns
+      ? get_viewable_fields_from_layout(
+          viewname,
+          stateHash,
+          table,
+          fields,
+          columns,
+          false,
+          { noHTML: true, ...req },
+          req.__,
+          state,
+          viewname,
+          layout.besides
+        )
+      : get_viewable_fields(
+          viewname,
+          stateHash,
+          table,
+          fields,
+          columns,
+          false,
+          { noHTML: true, ...req },
+          req.__
+        );
+  
+      const layoutCols = layout?.besides;
+
+      const custRowsData = rowsdata.map((row) => {
+        const rowData = {};
+        tfields.forEach(({ label, key }, ix) => {
+          const layooutCol = layoutCols?.[ix];
+          rowData[layooutCol?.header_label || label] =
+            typeof key === "function" ? key(row) : row[key];
+        });
+        return rowData;
+      });
+
+      const jsonData = JSON.stringify(custRowsData);
       return json_response(
         table,
         jsonData,
@@ -696,7 +733,6 @@ const do_download = async (
               { noHTML: true, ...req },
               req.__
             );
-        console.log(tfields);
 
         const layoutCols = layout?.besides;
         const csvRows = rows.map((row) => {

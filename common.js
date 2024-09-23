@@ -33,7 +33,6 @@ const json_response = async (table, str, format, table_style, table_position, ta
             theme: table_style,
             showRowStripes: true,
           },
-  
           columns: Object.keys(data[0]).map((key) => ({name: key, filterButton: header_filter})),
           rows: data.map((row) => Object.values(row)),
   
@@ -76,7 +75,6 @@ const json_response = async (table, str, format, table_style, table_position, ta
     //xml
     case "xml":
       const xml = json2xml(JSON.parse(str));
-      console.log(xml);
       blob = Buffer.from(xml).toString("base64");
       filename = `${table.name}.xml`;
       mimetype = "application/xml";
